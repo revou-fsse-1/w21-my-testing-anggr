@@ -16,7 +16,8 @@
     "start": "remix-serve build",
     "postinstall": "prisma generate",
     "typecheck": "tsc -b",
-    "validate": "run-p lint typecheck"
+    "validate": "run-p lint typecheck",
+    "test:e2e": "playwright test tests/e2e"
   },
   "eslintIgnore": [
     "/node_modules",
