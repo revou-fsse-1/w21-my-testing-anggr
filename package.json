@@ -18,7 +18,8 @@
     "typecheck": "tsc -b",
     "validate": "run-p lint typecheck",
     "test:e2e": "playwright test tests/e2e",
-    "test:integration": "vitest tests/integration"
+    "test:integration": "vitest tests/integration",
+    "test:unit": "vitest tests/unit"
   },
   "eslintIgnore": [
     "/node_modules",
