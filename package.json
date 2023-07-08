@@ -17,7 +17,8 @@
     "postinstall": "prisma generate",
     "typecheck": "tsc -b",
     "validate": "run-p lint typecheck",
-    "test:e2e": "playwright test tests/e2e"
+    "test:e2e": "playwright test tests/e2e",
+    "test:integration": "vitest tests/integration"
   },
   "eslintIgnore": [
     "/node_modules",
