@@ -1,9 +1,7 @@
-// import { test, expect, vi } from "vitest";
+
 import { test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Login from "../../app/routes/login";
-
-
 
 test("renders form fields and buttons", async () => {
   render(<Login />);
@@ -25,3 +23,19 @@ test("renders form fields and buttons", async () => {
   expect(signupButton).not.toBeNull();
 });
 
+// test("updates form field values when they are changed", async () => {
+//   render(<Login />);
+
+//   const emailInput = screen.getByLabelText(
+//     /email address/i
+//   ) as HTMLInputElement;
+//   const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+
+//   // Change the value of the email input field
+//   fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
+//   expect(emailInput.value).toBe("testuser@example.com");
+
+//   // Change the value of the password input field
+//   fireEvent.change(passwordInput, { target: { value: "testpassword" } });
+//   expect(passwordInput.value).toBe("testpassword");
+// });

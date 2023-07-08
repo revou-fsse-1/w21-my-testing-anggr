@@ -1,4 +1,5 @@
-import { prisma } from "~/db.server";
+import { prisma } from "../db.server";
+// import { prisma } from "~/db.server";
 
 import type { Post } from "@prisma/client";
 
