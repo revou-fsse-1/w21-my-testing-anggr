@@ -24,3 +24,4 @@ test("renders form fields and buttons", async () => {
   const signupButton = screen.getByText(/sign up/i);
   expect(signupButton).not.toBeNull();
 });
+
