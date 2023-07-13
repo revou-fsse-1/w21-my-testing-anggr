@@ -1,41 +1,59 @@
+// tests/Login.test.tsx
 
-import { test, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import Login from "../../app/routes/login";
+import * as React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "../../src/context/AuthContext";
+import Login from "../../src/components/Login";
+import * as api from "../../src/api";
 
-test("renders form fields and buttons", async () => {
-  render(<Login />);
+jest.mock("../../src/api.ts");
+const mockLogin = api.loginUser as jest.MockedFunction<typeof api.loginUser>;
+describe("Login", () => {
+  it("allows user to login successfully", async () => {
+    function createMockJwt(userId: string) {
+      const header = Buffer.from(
+        JSON.stringify({ alg: "HS256", typ: "JWT" })
+      ).toString("base64");
 
-  // Check that the email input field is rendered
-  const emailInput = screen.getByLabelText(/email address/i);
-  expect(emailInput).not.toBeNull();
+      const payload = Buffer.from(JSON.stringify({ id: userId })).toString(
+        "base64"
+      );
 
-  // Check that the password input field is rendered
-  const passwordInput = screen.getByLabelText(/password/i);
-  expect(passwordInput).not.toBeNull();
+      const signature = "mock_signature";
 
-  // Check that the login button is rendered
-  const loginButton = screen.getByText(/log in/i);
-  expect(loginButton).not.toBeNull();
+      return `${header}.${payload}.${signature}`;
+    }
 
-  // Check that the signup button is rendered
-  const signupButton = screen.getByText(/sign up/i);
-  expect(signupButton).not.toBeNull();
+    const mockJwt = createMockJwt("test_user_id");
+
+    mockLogin.mockResolvedValueOnce({
+      token: mockJwt,
+      userId: "test_user_id",
+    });
+
+    const { getByLabelText, getByRole } = render(
+      <AuthProvider>
+        <BrowserRouter>
+          <Login />
+        </BrowserRouter>
+      </AuthProvider>
+    );
+
+    fireEvent.change(getByLabelText(/Email address/i), {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(getByLabelText(/Password/i), {
+      target: { value: "test_password" },
+    });
+
+    fireEvent.click(getByRole("button", { name: /Sign In/i }));
+
+    await waitFor(() =>
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "test_password",
+      })
+    );
+  });
 });
-
-// test("updates form field values when they are changed", async () => {
-//   render(<Login />);
-
-//   const emailInput = screen.getByLabelText(
-//     /email address/i
-//   ) as HTMLInputElement;
-//   const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
-
-//   // Change the value of the email input field
-//   fireEvent.change(emailInput, { target: { value: "testuser@example.com" } });
-//   expect(emailInput.value).toBe("testuser@example.com");
-
-//   // Change the value of the password input field
-//   fireEvent.change(passwordInput, { target: { value: "testpassword" } });
-//   expect(passwordInput.value).toBe("testpassword");
-// });
