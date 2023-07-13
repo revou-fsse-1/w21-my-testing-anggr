@@ -57,8 +57,13 @@ export const registerUser = async (userData: RegisterData) => {
 export const loginUser = async (loginData: LoginData) => {
   try {
     const response = await api.post("/auth/login", loginData);
-    if (response.data && response.data.userId) {
-      localStorage.setItem("userId", response.data.userId);
+    if (response.data) {
+      if (response.data.userId) {
+        localStorage.setItem("userId", response.data.userId);
+      }
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+      }
     }
     return response.data;
   } catch (error) {

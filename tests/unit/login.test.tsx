@@ -1,5 +1,3 @@
-// tests/Login.test.tsx
-
 import * as React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
